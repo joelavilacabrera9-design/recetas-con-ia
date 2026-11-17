@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block page %}ingredients{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Inventario</h1>
+  <p>Lo que tienes en casa. Las recetas se generan solo con estos ingredientes.</p>
+</header>
+
+<div class="cols">
+  <section class="panel" aria-labelledby="pantry-title">
+    <h2 id="pantry-title" class="visually-hidden">Ingredientes</h2>
+    <form id="ingredient-form" class="add-row">
+      <input type="hidden" name="id">
+      <label class="field field-name">
+        <span>Ingrediente</span>
+        <input type="text" name="nombre" required minlength="2" maxlength="50" placeholder="Ej. zanahoria" list="catalogo" autocomplete="off">
+      </label>
+      <label class="field field-qty">
+        <span>Cantidad</span>
+        <input type="number" name="cantidad" min="0" step="any" placeholder="4">
+      </label>
+      <label class="field field-unit">
+        <span>Unidad</span>
+        <input type="text" name="unidad" maxlength="20" placeholder="unidades" list="unidades">
+      </label>
+      <datalist id="catalogo"></datalist>
+      <datalist id="unidades">
+        <option value="unidades"><option value="g"><option value="kg"><option value="ml">
+        <option value="litros"><option value="libras"><option value="tazas"><option value="cucharadas">
+      </datalist>
+      <div class="add-actions">
+        <button class="btn btn-primary" type="submit" id="ingredient-submit">Agregar</button>
+        <button class="btn btn-quiet" type="button" id="ingredient-cancel" hidden>Cancelar</button>
+      </div>
+    </form>
+
+    <ul id="ingredient-list" class="pantry"></ul>
+    <div id="ingredient-empty" class="empty" hidden>
+      <p><strong>Tu inventario está vacío.</strong></p>
+      <p>Agrega al menos un ingrediente para poder generar recetas.</p>
+    </div>
+  </section>
+
+  <aside class="panel panel-generate" aria-labelledby="gen-title">
+    <h2 id="gen-title">Generar receta</h2>
+    <p class="muted" id="gen-summary">Agrega ingredientes para empezar.</p>
+    <form id="generate-form" class="form">
+      <label class="field">
+        <span>Tipo de plato</span>
+        <select name="tipo">
+          <option value="">Cualquiera</option>
+          <option value="desayuno">Desayuno</option>
+          <option value="almuerzo">Almuerzo</option>
+          <option value="cena">Cena</option>
+          <option value="postre">Postre</option>
+          <option value="bebida">Bebida o jugo</option>
+          <option value="acompañamiento">Acompañamiento</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Porciones</span>
+        <select name="porciones">
+          {% for n in range(1, 13) %}<option value="{{ n }}" {% if n == 2 %}selected{% endif %}>{{ n }}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field">
+        <span>Preferencias <em class="optional">(opcional)</em></span>
+        <input type="text" name="preferencias" maxlength="120" placeholder="Ej. vegetariana, sin picante">
+      </label>
+      <button class="btn btn-primary btn-block" type="submit" id="generate-btn" disabled>Generar receta</button>
+      <p class="hint">La receta usa los ingredientes que mejor combinan; no siempre todos.</p>
+    </form>
+  </aside>
+</div>
+
+<section id="generated" class="generated" aria-live="polite"></section>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ titulo }} | Cocina con lo que hay</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body data-page="{% block page %}{% endblock %}">
+{% block shell %}
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="logo" href="/ingredientes">
+        <img src="/favicon.ico" alt="" width="28" height="28">
+        <span>Cocina con lo que hay</span>
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="/ingredientes" data-nav="ingredients">Inventario</a>
+        <a href="/recetas" data-nav="recipes">Mis recetas</a>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="user" id="nav-user"></span>
+        <button type="button" class="link-btn" id="logout"><span class="long">Cerrar sesión</span><span class="short">Salir</span></button>
+      </div>
+    </aside>
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+{% endblock %}
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

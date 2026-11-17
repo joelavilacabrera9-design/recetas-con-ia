@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block page %}login{% endblock %}
+{% block shell %}
+<div class="auth">
+  <section class="auth-intro">
+    <a class="logo logo-light" href="/login">
+      <img src="/favicon.ico" alt="" width="28" height="28">
+      <span>Cocina con lo que hay</span>
+    </a>
+    <h1>Registra lo que tienes en la despensa y prepara algo hoy mismo.</h1>
+    <p>La aplicación propone recetas usando solo tus ingredientes, con cantidades, pasos y tiempo estimado.</p>
+  </section>
+  <section class="auth-form">
+    <form id="login-form" class="form" novalidate>
+      <h2>Iniciar sesión</h2>
+      <label class="field">
+        <span>Correo</span>
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label class="field">
+        <span>Contraseña</span>
+        <input type="password" name="password" required autocomplete="current-password">
+      </label>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+      <p class="muted">¿No tienes cuenta? <a href="/registro">Crea una</a></p>
+    </form>
+  </section>
+</div>
+{% endblock %}

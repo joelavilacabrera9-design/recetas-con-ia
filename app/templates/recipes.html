@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block page %}recipes{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Mis recetas</h1>
+  <p id="recipes-summary">Recetas que has generado, de la más reciente a la más antigua.</p>
+</header>
+
+<div id="recipes-empty" class="empty empty-page" hidden>
+  <p><strong>Aún no has generado recetas.</strong></p>
+  <p>Ve a tu <a href="/ingredientes">inventario</a> y presiona «Generar receta».</p>
+</div>
+
+<div class="master-detail" id="recipes-view" hidden>
+  <ul id="recipe-list" class="recipe-index" aria-label="Lista de recetas"></ul>
+  <section id="recipe-detail" class="detail"></section>
+</div>
+{% endblock %}
