@@ -1,0 +1,334 @@
+/* Cocina con lo que hay: interfaz sobria, verde hierba sobre fondo claro. */
+:root {
+  --paper: #f4f6f3;
+  --surface: #ffffff;
+  --ink: #1e2a23;
+  --muted: #5d6a62;
+  --line: #d9dfd9;
+  --herb: #2f6b4f;
+  --herb-dark: #23523c;
+  --herb-tint: #e6efe9;
+  --mustard: #d4951b;
+  --danger: #b3261e;
+  --danger-tint: #fbeceb;
+
+  --font-head: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --sidebar: 256px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+h1, h2, h3 { font-family: var(--font-head); line-height: 1.15; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--herb); text-underline-offset: 2px; }
+a:hover { color: var(--herb-dark); }
+
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--herb) 45%, transparent); outline-offset: 2px; }
+
+.muted { color: var(--muted); }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Estructura ---------- */
+.shell { display: grid; grid-template-columns: var(--sidebar) 1fr; min-height: 100vh; }
+
+.sidebar {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; gap: 2rem;
+  padding: 1.5rem 1rem;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+}
+
+.logo {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-head); font-weight: 700; font-size: 1.05rem;
+  color: var(--ink); text-decoration: none; padding: 0 0.5rem;
+  white-space: nowrap;
+}
+.logo:hover { color: var(--ink); }
+.logo-light, .logo-light:hover { color: #fff; }
+
+.nav { display: flex; flex-direction: column; gap: 0.25rem; }
+.nav a {
+  display: block; padding: 0.55rem 0.75rem; border-radius: var(--r-sm);
+  color: var(--muted); font-weight: 600; text-decoration: none;
+}
+.nav a:hover { background: var(--paper); color: var(--ink); }
+body[data-page="ingredients"] .nav a[data-nav="ingredients"],
+body[data-page="recipes"] .nav a[data-nav="recipes"] {
+  background: var(--herb-tint); color: var(--herb-dark);
+}
+
+.sidebar-foot {
+  margin-top: auto; padding: 1rem 0.5rem 0;
+  border-top: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 0.35rem;
+}
+.user { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.main { padding: 2.5rem clamp(1rem, 4vw, 3rem) 4rem; max-width: 1180px; width: 100%; }
+
+.page-head { margin-bottom: 1.75rem; }
+.page-head p { color: var(--muted); margin-top: 0.4rem; max-width: 60ch; }
+
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 1.5rem; align-items: start; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 1.5rem;
+}
+.panel-generate { position: sticky; top: 1.5rem; }
+.panel-generate h2 { margin-bottom: 0.35rem; }
+.panel-generate .form { margin-top: 1.25rem; }
+
+/* ---------- Formularios ---------- */
+.form { display: flex; flex-direction: column; gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 0.3rem; font-weight: 600; font-size: 0.92rem; }
+.field .optional { font-style: normal; font-weight: 400; color: var(--muted); }
+.hint { font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+
+input, select {
+  width: 100%;
+  font: inherit; font-weight: 400; color: var(--ink);
+  padding: 0.6rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+}
+input::placeholder { color: #9aa59e; }
+input:focus, select:focus { border-color: var(--herb); outline: none; box-shadow: 0 0 0 3px var(--herb-tint); }
+input[aria-invalid="true"] { border-color: var(--danger); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font: inherit; font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--r-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn-primary { background: var(--herb); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--herb-dark); }
+.btn-quiet { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-quiet:hover { background: var(--paper); }
+.btn-danger { background: transparent; color: var(--danger); border-color: color-mix(in srgb, var(--danger) 30%, transparent); }
+.btn-danger:hover { background: var(--danger-tint); }
+.btn-block { width: 100%; }
+.btn-sm { padding: 0.35rem 0.7rem; font-size: 0.88rem; }
+
+.link-btn {
+  font: inherit; color: var(--muted); background: none; border: 0; padding: 0;
+  text-align: left; cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+}
+.link-btn:hover { color: var(--danger); }
+.link-btn .short { display: none; }
+
+.spinner {
+  width: 1rem; height: 1rem; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4); border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Inventario ---------- */
+.add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 0.9fr) minmax(0, 1.1fr) auto;
+  gap: 0.75rem; align-items: end;
+  padding-bottom: 1.25rem; margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.add-actions { display: flex; gap: 0.5rem; }
+
+.pantry { list-style: none; margin: 0; padding: 0; }
+.pantry li {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.7rem 0.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.pantry li:last-child { border-bottom: 0; }
+.pantry li.editing { background: var(--herb-tint); margin: 0 -0.75rem; padding-left: 1rem; padding-right: 1rem; border-radius: var(--r-sm); }
+.pantry .name { flex: 1; font-weight: 600; text-transform: capitalize; }
+.pantry .qty { color: var(--muted); font-variant-numeric: tabular-nums; }
+.pantry .row-actions { display: flex; gap: 0.25rem; }
+.icon-btn {
+  font: inherit; font-size: 0.88rem; color: var(--muted);
+  background: none; border: 0; padding: 0.3rem 0.5rem; border-radius: var(--r-sm); cursor: pointer;
+}
+.icon-btn:hover { background: var(--paper); color: var(--ink); }
+.icon-btn.del:hover { background: var(--danger-tint); color: var(--danger); }
+
+.empty { padding: 2rem 0.5rem; text-align: center; color: var(--muted); }
+.empty p + p { margin-top: 0.25rem; }
+.empty strong { color: var(--ink); }
+.empty-page { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r-md); padding: 3rem 1rem; }
+
+/* ---------- Ficha de receta (el elemento principal) ---------- */
+.generated:empty { display: none; }
+.generated { margin-top: 2rem; }
+.generated-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.75rem; }
+
+.sheet {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--herb);
+  border-radius: var(--r-md);
+  padding: 1.75rem;
+}
+.sheet-head h2 { font-size: 1.75rem; }
+.facts { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin: 1rem 0 0; }
+.facts div { display: flex; flex-direction: column; }
+.facts dt { font-size: 0.85rem; color: var(--muted); }
+.facts dd { margin: 0; font-weight: 600; }
+.facts dd.cap { text-transform: capitalize; }
+
+.sheet-body {
+  display: grid; grid-template-columns: minmax(200px, 0.8fr) minmax(0, 1.6fr);
+  gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.sheet-body h3 { margin-bottom: 0.75rem; }
+
+.checklist { list-style: none; margin: 0; padding: 0; }
+.checklist li + li { border-top: 1px dashed var(--line); }
+.checklist label { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.45rem 0; cursor: pointer; }
+.checklist input { width: auto; accent-color: var(--herb); transform: translateY(2px); }
+.checklist .ing { flex: 1; }
+.checklist .amount { color: var(--muted); font-size: 0.92rem; text-align: right; }
+.checklist input:checked ~ .ing { text-decoration: line-through; color: var(--muted); }
+
+.steps { list-style: none; counter-reset: paso; margin: 0; padding: 0; }
+.steps li {
+  counter-increment: paso;
+  display: grid; grid-template-columns: 2rem 1fr; gap: 0.75rem;
+  padding: 0.5rem 0; max-width: 70ch;
+}
+.steps li::before {
+  content: counter(paso);
+  display: grid; place-items: center;
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--herb-tint); color: var(--herb-dark);
+  font-family: var(--font-head); font-weight: 700;
+}
+
+.sheet-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+  margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 0.9rem;
+}
+
+.stars { display: inline-flex; gap: 0.1rem; }
+.star {
+  font-size: 1.35rem; line-height: 1; padding: 0 0.05rem;
+  color: #c9d0ca; background: none; border: 0; cursor: pointer;
+}
+.star.on { color: var(--mustard); }
+.star:hover, .star:focus-visible { color: var(--mustard); }
+.stars-static { color: var(--mustard); letter-spacing: 0.05em; font-size: 0.9rem; }
+.stars-static .off { color: #c9d0ca; }
+
+/* ---------- Mis recetas: lista + detalle ---------- */
+.master-detail { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 1.5rem; align-items: start; }
+.recipe-index {
+  list-style: none; margin: 0; padding: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+  overflow: hidden; position: sticky; top: 1.5rem; max-height: calc(100vh - 3rem); overflow-y: auto;
+}
+.recipe-index li + li { border-top: 1px solid var(--line); }
+.recipe-index button {
+  display: block; width: 100%; text-align: left;
+  font: inherit; color: inherit; background: none; border: 0; cursor: pointer;
+  padding: 0.85rem 1rem; border-left: 3px solid transparent;
+}
+.recipe-index button:hover { background: var(--paper); }
+.recipe-index button[aria-current="true"] { background: var(--herb-tint); border-left-color: var(--herb); }
+.recipe-index .r-name { display: block; font-weight: 600; }
+.recipe-index .r-meta { display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 0.2rem; font-size: 0.85rem; color: var(--muted); }
+
+/* ---------- Login / registro ---------- */
+.auth { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+.auth-intro {
+  background: var(--herb); color: #e9f2ec;
+  padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 2rem;
+}
+.auth-intro h1 { color: #fff; font-size: clamp(1.8rem, 3.2vw, 2.6rem); max-width: 18ch; margin-top: auto; }
+.auth-intro p { max-width: 42ch; margin-bottom: 1rem; font-size: 1.05rem; }
+.auth-form { display: grid; place-items: center; padding: 2rem 1.5rem; }
+.auth-form .form { width: 100%; max-width: 360px; }
+.auth-form h2 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+
+/* ---------- Avisos ---------- */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  max-width: min(92vw, 480px);
+  padding: 0.75rem 1.1rem; border-radius: var(--r-sm);
+  background: var(--ink); color: #fff; font-weight: 600;
+  box-shadow: 0 6px 24px rgba(30, 42, 35, 0.25);
+  z-index: 50;
+}
+.toast.error { background: var(--danger); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  .cols, .master-detail { grid-template-columns: 1fr; }
+  .panel-generate, .recipe-index { position: static; max-height: none; }
+  .sheet-body { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+@media (max-width: 720px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar {
+    position: sticky; height: auto; z-index: 10;
+    flex-direction: row; align-items: center; flex-wrap: wrap; gap: 0.5rem 1rem;
+    padding: 0.75rem 1rem; border-right: 0; border-bottom: 1px solid var(--line);
+  }
+  .logo span { display: none; }
+  .nav { flex-direction: row; flex: 1; }
+  .nav a { padding: 0.4rem 0.6rem; white-space: nowrap; }
+  .sidebar-foot .link-btn { white-space: nowrap; }
+  .link-btn .long { display: none; }
+  .link-btn .short { display: inline; }
+  .sidebar { flex-wrap: nowrap; }
+  .sidebar-foot { margin: 0; padding: 0; border: 0; flex-direction: row; align-items: center; }
+  .user { display: none; }
+  .main { padding-top: 1.5rem; }
+  h1 { font-size: 1.6rem; }
+  .add-row { grid-template-columns: 1fr 1fr; }
+  .add-row .field-name, .add-actions { grid-column: 1 / -1; }
+  .add-actions .btn { flex: 1; }
+  .sheet { padding: 1.25rem; }
+  .auth { grid-template-columns: 1fr; }
+  .auth-intro { padding: 1.5rem; }
+  .auth-intro h1 { font-size: 1.6rem; margin-top: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 2s; }
+}
